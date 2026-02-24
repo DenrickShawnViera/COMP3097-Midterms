@@ -66,6 +66,8 @@
       border-radius: 6px;
       cursor: pointer;
       transition: 0.2s;
+      border: 1px solid transparent;
+      margin: 6px 0;
     }
 
     label.option:hover {
@@ -76,14 +78,39 @@
       margin-right: 8px;
     }
 
+    /* clearer feedback */
     .correct {
-      background: #c8f7c5 !important;
-      border-left: 4px solid #2ecc71;
+      background: #d9fbe0 !important;
+      border: 1px solid #2ecc71 !important;
+      border-left: 6px solid #2ecc71 !important;
     }
 
     .incorrect {
-      background: #f7c5c5 !important;
-      border-left: 4px solid #e74c3c;
+      background: #ffe0e0 !important;
+      border: 1px solid #e74c3c !important;
+      border-left: 6px solid #e74c3c !important;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .feedback.ok {
+      display: block;
+      background: #ecfdf3;
+      border: 1px solid #2ecc71;
+      color: #14532d;
+    }
+
+    .feedback.bad {
+      display: block;
+      background: #fff1f2;
+      border: 1px solid #e74c3c;
+      color: #7f1d1d;
     }
 
     .btn-submit {
@@ -100,9 +127,7 @@
       margin-top: 10px;
     }
 
-    .btn-submit:hover {
-      background: #2980b9;
-    }
+    .btn-submit:hover { background: #2980b9; }
 
     .btn-reset {
       display: block;
@@ -118,9 +143,7 @@
       margin-top: 10px;
     }
 
-    .btn-reset:hover {
-      background: #f0f3f7;
-    }
+    .btn-reset:hover { background: #f0f3f7; }
 
     .result-box {
       margin-top: 25px;
@@ -131,578 +154,510 @@
       font-size: 20px;
       font-weight: bold;
       text-align: center;
+      display: none;
     }
 
-    .answer-key {
-      margin-top: 25px;
-      padding: 20px;
+    details.key {
+      margin-top: 18px;
       background: #f0f3f7;
       border-radius: 10px;
-      font-size: 15px;
+      padding: 10px 12px;
+      display: none;
+    }
+
+    details.key summary {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 10px 4px;
+    }
+
+    .key-body {
+      padding: 6px 4px 12px;
+      font-size: 14px;
       line-height: 1.7;
     }
 
-    .answer-key h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
+    code { background:#f3f4f6; padding:2px 5px; border-radius:6px; }
   </style>
 </head>
 
 <body>
-
   <div class="header">
     COMP3097 – Practice Exam (Quiz 1–6)
-    <div class="header-sub">Single page • Sections by quiz • Shows Correct & Your Answer After Submit</div>
+    <div class="header-sub">Choices randomized each refresh • Clear feedback after submit</div>
   </div>
 
   <div class="container">
-    <form id="quizForm">
+    <form id="quizForm"></form>
 
-      <!-- ===================================================== -->
-      <!-- QUIZ 1 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 1 — Swift Basics</div>
+    <button type="button" class="btn-submit" onclick="submitQuiz()">Submit Exam</button>
+    <button type="button" class="btn-reset" onclick="resetQuiz()">Reset (and reshuffle)</button>
 
-      <div class="question-card">
-        <div class="question-title">1. In Swift, functions can be passed as parameters to other functions and they can be returned from functions.</div>
-        <label class="option"><input type="radio" name="q1" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q1" value="B"> B) False</label>
-      </div>
+    <div id="result" class="result-box"></div>
 
-      <div class="question-card">
-        <div class="question-title">2. In Swift, all types contain a nil as a possible value</div>
-        <label class="option"><input type="radio" name="q2" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q2" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">3. How the optional type is denoted in Swift?</div>
-        <label class="option"><input type="radio" name="q3" value="A"> A) by adding a question mark (?) after the name of the type</label>
-        <label class="option"><input type="radio" name="q3" value="B"> B) by adding an exclamation mark (!) after the name of the type</label>
-        <label class="option"><input type="radio" name="q3" value="C"> C) by adding a question mark (?) infront of the name of the type</label>
-        <label class="option"><input type="radio" name="q3" value="D"> D) by adding an exclamation mark (!) infront of the name of the type</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">4. Which of the following statement(s) can be used to declare an integer constant of value 5 in Swift?</div>
-        <label class="option"><input type="radio" name="q4" value="A"> A) let x = 5</label>
-        <label class="option"><input type="radio" name="q4" value="B"> B) let Int x = 5</label>
-        <label class="option"><input type="radio" name="q4" value="C"> C) const x:Int</label>
-        <label class="option"><input type="radio" name="q4" value="D"> D) x=5</label>
-        <label class="option"><input type="radio" name="q4" value="E"> E) const x = 5</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">5. Which of the following is true?</div>
-        <label class="option"><input type="radio" name="q5" value="A"> A) In Swift, values are never converted (cast operation) automatically to another type</label>
-        <label class="option"><input type="radio" name="q5" value="B"> B) In Swift, values are always converted (cast operation) automatically to another type if needed</label>
-        <label class="option"><input type="radio" name="q5" value="C"> C) In Swift, convertion (cast operation) is not possible at all</label>
-        <label class="option"><input type="radio" name="q5" value="D"> D) There is no such thing as a cast operation in programming languages</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">6. Swift requires each line to be terminated by a semicolon ';'.</div>
-        <label class="option"><input type="radio" name="q6" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q6" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">7. Consider a variable x that is an integer. If you would like to print the value as part of a text, e.g. for x=5:\nValue of x is: 5\nWhich expression would you use?</div>
-        <label class="option"><input type="radio" name="q7" value="A"> A) print("Value of x is: \(x)")</label>
-        <label class="option"><input type="radio" name="q7" value="B"> B) print("Value of x is: "+String(x))</label>
-        <label class="option"><input type="radio" name="q7" value="C"> C) print("Value of x is: ", x)</label>
-        <label class="option"><input type="radio" name="q7" value="D"> D) All of the above</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">8. Which of the following expressions allows us to declare an array?</div>
-        <label class="option"><input type="radio" name="q8" value="A"> A) var shoppingList = ["catfish", "water", "tulips", "blue paint"]</label>
-        <label class="option"><input type="radio" name="q8" value="B"> B) var shoppingList = ("catfish", "water", "tulips", "blue paint")</label>
-        <label class="option"><input type="radio" name="q8" value="C"> C) array shoppingList = ["catfish", "water", "tulips", "blue paint"]</label>
-        <label class="option"><input type="radio" name="q8" value="D"> D) var shoppingList = array["catfish", "water", "tulips", "blue paint"]</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">9. Which of the following expressions can be used to declare a function that takes an integer as a parameter and returns string?</div>
-        <label class="option"><input type="radio" name="q9" value="A"> A) func foo(a:Int)->String</label>
-        <label class="option"><input type="radio" name="q9" value="B"> B) function foo(a:Int)->String</label>
-        <label class="option"><input type="radio" name="q9" value="C"> C) func foo(a:Int):String</label>
-        <label class="option"><input type="radio" name="q9" value="D"> D) function foo(a:Int):String</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">10. Select the statement that is correct and the most complete describing Swift</div>
-        <label class="option"><input type="radio" name="q10" value="A"> A) Swift is a strongly typed language that allows for the type inference</label>
-        <label class="option"><input type="radio" name="q10" value="B"> B) Swift is a weakly typed language that allows for the type inference</label>
-        <label class="option"><input type="radio" name="q10" value="C"> C) Swift is a strongly typed language that does not allow for the type inference</label>
-        <label class="option"><input type="radio" name="q10" value="D"> D) Swift is a weakly typed language that does not allow for the type inference</label>
-      </div>
-
-      <!-- ===================================================== -->
-      <!-- QUIZ 2 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 2 — Swift Functions & Parameters</div>
-
-      <div class="question-card">
-        <div class="question-title">11. In Swift, function is identified by</div>
-        <label class="option"><input type="radio" name="q11" value="A"> A) keyword func</label>
-        <label class="option"><input type="radio" name="q11" value="B"> B) keyword function</label>
-        <label class="option"><input type="radio" name="q11" value="C"> C) returned type with -></label>
-        <label class="option"><input type="radio" name="q11" value="D"> D) at least one parameter</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">12. In the following declaration:\nfunc swapTwoInts(_ a: inout Int, _ b: inout Int) { (a, b) = (b, a) }\n'_' means:</div>
-        <label class="option"><input type="radio" name="q12" value="A"> A) when calling the function param labels should not be used</label>
-        <label class="option"><input type="radio" name="q12" value="B"> B) inout means that params are appearing and disappearing</label>
-        <label class="option"><input type="radio" name="q12" value="C"> C) params are output parameters</label>
-        <label class="option"><input type="radio" name="q12" value="D"> D) parameters are optional</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">13. In Swift a class ...</div>
-        <label class="option"><input type="radio" name="q13" value="A"> A) can inherit from one class but conform to multiple protocols</label>
-        <label class="option"><input type="radio" name="q13" value="B"> B) can inherit from multiple classes and conform to multiple protocols</label>
-        <label class="option"><input type="radio" name="q13" value="C"> C) can inherit from multiple classes but conform to only one protocol</label>
-        <label class="option"><input type="radio" name="q13" value="D"> D) can inherit from one class and conform to a single protocol</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">14. Swift allows for the functions to be nested (declare function in a body of another function)</div>
-        <label class="option"><input type="radio" name="q14" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q14" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">15. Consider:\nfunc minMax(array:[Int])->(a:Int, b:Int)?\nBest answer:</div>
-        <label class="option"><input type="radio" name="q15" value="A"> A) takes array of Ints and returns tuple (two Ints) OR nil</label>
-        <label class="option"><input type="radio" name="q15" value="B"> B) takes array and returns a tuple with two Int values</label>
-        <label class="option"><input type="radio" name="q15" value="C"> C) returns a tuple with two Int values or nil</label>
-        <label class="option"><input type="radio" name="q15" value="D"> D) returns an Int value or nil</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">16. Consider:\nfunc add(no1:Int, no2:Int)->Int\nBest answer:</div>
-        <label class="option"><input type="radio" name="q16" value="A"> A) takes two Int parameters and returns an Int</label>
-        <label class="option"><input type="radio" name="q16" value="B"> B) takes two Int parameters</label>
-        <label class="option"><input type="radio" name="q16" value="C"> C) returns an Int</label>
-        <label class="option"><input type="radio" name="q16" value="D"> D) incorrect declaration</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">17. How many times will the loop execute?\nfor i in 1...10 { ... }</div>
-        <label class="option"><input type="radio" name="q17" value="A"> A) 5</label>
-        <label class="option"><input type="radio" name="q17" value="B"> B) 9</label>
-        <label class="option"><input type="radio" name="q17" value="C"> C) 10</label>
-        <label class="option"><input type="radio" name="q17" value="D"> D) 11</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">18. In the following declaration:\nfunc swapTwoInts(_ a: inout Int, _ b: inout Int) { (a, b) = (b, a) }\ninout means:</div>
-        <label class="option"><input type="radio" name="q18" value="A"> A) param labels must be used</label>
-        <label class="option"><input type="radio" name="q18" value="B"> B) params are appearing and disappearing</label>
-        <label class="option"><input type="radio" name="q18" value="C"> C) params are input and output parameters</label>
-        <label class="option"><input type="radio" name="q18" value="D"> D) parameters are optional</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">19. The following two functions have the same type.</div>
-        <label class="option"><input type="radio" name="q19" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q19" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">20. In:\nfunc pow(firstArg a:Int)->Int\nWhich is correct?</div>
-        <label class="option"><input type="radio" name="q20" value="A"> A) firstArg used in call, a used in body</label>
-        <label class="option"><input type="radio" name="q20" value="B"> B) a used in call, firstArg used in body</label>
-        <label class="option"><input type="radio" name="q20" value="C"> C) firstArg used in call and both names usable in body</label>
-        <label class="option"><input type="radio" name="q20" value="D"> D) both are used in call and both used in body</label>
-      </div>
-
-      <!-- ===================================================== -->
-      <!-- QUIZ 3 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 3 — SwiftUI</div>
-
-      <div class="question-card">
-        <div class="question-title">21. SwiftUI can be only used to define UI for simple applications</div>
-        <label class="option"><input type="radio" name="q21" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q21" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">22. SwiftUI uses a declarative approach</div>
-        <label class="option"><input type="radio" name="q22" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q22" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">23. The origin of the UI element in iOS app is the upper-left corner</div>
-        <label class="option"><input type="radio" name="q23" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q23" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">24. What is SwiftUI?</div>
-        <label class="option"><input type="radio" name="q24" value="A"> A) an innovative way to build user interfaces using Swift</label>
-        <label class="option"><input type="radio" name="q24" value="B"> B) a UI component defined in Swift</label>
-        <label class="option"><input type="radio" name="q24" value="C"> C) a UI component allowing user to code in Swift</label>
-        <label class="option"><input type="radio" name="q24" value="D"> D) a scripting language that supports Storyboard</label>
-      </div>
-
-      <div class="question-card">
-        <div class="question-title">25. What is the name of the visual tool used to build layouts and define navigation/transitions between screens?</div>
-        <label class="option"><input type="radio" name="q25" value="A"> A) storyboard</label>
-        <label class="option"><input type="radio" name="q25" value="B"> B) SwiftUI</label>
-        <label class="option"><input type="radio" name="q25" value="C"> C) Layout editor</label>
-        <label class="option"><input type="radio" name="q25" value="D"> D) UI inspector</label>
-      </div>
-
-      <!-- ===================================================== -->
-      <!-- QUIZ 4 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 4 — iOS Segues</div>
-
-      <!-- 10 questions (26–35) -->
-      <!-- (kept exactly like earlier) -->
-      <div class="question-card"><div class="question-title">26. This segue displays the new content using the showDetailViewController:sender: method of the target view controller.</div>
-        <label class="option"><input type="radio" name="q26" value="A"> A) show</label>
-        <label class="option"><input type="radio" name="q26" value="B"> B) show details</label>
-        <label class="option"><input type="radio" name="q26" value="C"> C) present modally</label>
-        <label class="option"><input type="radio" name="q26" value="D"> D) present as popover</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">27. A ___________ defines a transition between two view controllers in your app's storyboard file.</div>
-        <label class="option"><input type="radio" name="q27" value="A"> A) segue</label>
-        <label class="option"><input type="radio" name="q27" value="B"> B) transition</label>
-        <label class="option"><input type="radio" name="q27" value="C"> C) passage</label>
-        <label class="option"><input type="radio" name="q27" value="D"> D) link</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">28. How can segues be executed in an iOS application?</div>
-        <label class="option"><input type="radio" name="q28" value="A"> A) only automatically</label>
-        <label class="option"><input type="radio" name="q28" value="B"> B) only programatically</label>
-        <label class="option"><input type="radio" name="q28" value="C"> C) either automatically or programmatically</label>
-        <label class="option"><input type="radio" name="q28" value="D"> D) segues are not executed</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">29. Which method allows you to prevent segue execution?</div>
-        <label class="option"><input type="radio" name="q29" value="A"> A) prepare(for:sender:)</label>
-        <label class="option"><input type="radio" name="q29" value="B"> B) shouldPerformSegue(withIdentifier:sender:)</label>
-        <label class="option"><input type="radio" name="q29" value="C"> C) viewDidLoad()</label>
-        <label class="option"><input type="radio" name="q29" value="D"> D) unwind(_:)</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">30. What does this call do?\nperformSegueWithIdentifier("SomeIdentifier", sender: self)</div>
-        <label class="option"><input type="radio" name="q30" value="A"> A) Triggers transition defined by the segue with id SomeIdentifier</label>
-        <label class="option"><input type="radio" name="q30" value="B"> B) Triggers transition to VC with id SomeIdentifier</label>
-        <label class="option"><input type="radio" name="q30" value="C"> C) Triggers transition from VC with id SomeIdentifier</label>
-        <label class="option"><input type="radio" name="q30" value="D"> D) This call is incorrect</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">31. If the segue is source → destination, you define an unwind action method in the destination view controller.</div>
-        <label class="option"><input type="radio" name="q31" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q31" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">32. A segue is ______________</div>
-        <label class="option"><input type="radio" name="q32" value="A"> A) one-way connection between source and destination</label>
-        <label class="option"><input type="radio" name="q32" value="B"> B) two-way connection</label>
-        <label class="option"><input type="radio" name="q32" value="C"> C) multidirectional connection</label>
-        <label class="option"><input type="radio" name="q32" value="D"> D) no meaning in iOS</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">33. This segue displays the new content using showViewController:sender:.</div>
-        <label class="option"><input type="radio" name="q33" value="A"> A) show</label>
-        <label class="option"><input type="radio" name="q33" value="B"> B) show details</label>
-        <label class="option"><input type="radio" name="q33" value="C"> C) present modally</label>
-        <label class="option"><input type="radio" name="q33" value="D"> D) present as popover</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">34. This segue displays the view controller modally using specified presentation and transition styles.</div>
-        <label class="option"><input type="radio" name="q34" value="A"> A) show</label>
-        <label class="option"><input type="radio" name="q34" value="B"> B) show details</label>
-        <label class="option"><input type="radio" name="q34" value="C"> C) present modally</label>
-        <label class="option"><input type="radio" name="q34" value="D"> D) present as popover</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">35. Which method allows you to pass data from source VC to destination VC?</div>
-        <label class="option"><input type="radio" name="q35" value="A"> A) prepare(for:sender:)</label>
-        <label class="option"><input type="radio" name="q35" value="B"> B) shouldPerformSegue(...)</label>
-        <label class="option"><input type="radio" name="q35" value="C"> C) viewDidLoad()</label>
-        <label class="option"><input type="radio" name="q35" value="D"> D) unwind(_:)</label>
-      </div>
-
-      <!-- ===================================================== -->
-      <!-- QUIZ 5 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 5 — iOS UI / TableView / Gestures</div>
-
-      <!-- 10 questions (36–45) -->
-      <div class="question-card"><div class="question-title">36. What does it mean that a table view is a data driven view?</div>
-        <label class="option"><input type="radio" name="q36" value="A"> A) generates content based on data source</label>
-        <label class="option"><input type="radio" name="q36" value="B"> B) generates content based on user input</label>
-        <label class="option"><input type="radio" name="q36" value="C"> C) controlled by data entry</label>
-        <label class="option"><input type="radio" name="q36" value="D"> D) controlled by data entry only</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">37. Select all types of gesture recognizers (best answer)</div>
-        <label class="option"><input type="radio" name="q37" value="A"> A) discrete and continuous</label>
-        <label class="option"><input type="radio" name="q37" value="B"> B) discrete</label>
-        <label class="option"><input type="radio" name="q37" value="C"> C) continuous</label>
-        <label class="option"><input type="radio" name="q37" value="D"> D) single-touch</label>
-        <label class="option"><input type="radio" name="q37" value="E"> E) multi-touch</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">38. Can you set the current value of the slider beyond the range min-max?</div>
-        <label class="option"><input type="radio" name="q38" value="A"> A) only in storyboard</label>
-        <label class="option"><input type="radio" name="q38" value="B"> B) only programmatically</label>
-        <label class="option"><input type="radio" name="q38" value="C"> C) not possible</label>
-        <label class="option"><input type="radio" name="q38" value="D"> D) causes runtime error</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">39. Arrange gesture recognizer states in correct order.</div>
-        <label class="option"><input type="radio" name="q39" value="A"> A) began → changed → ended</label>
-        <label class="option"><input type="radio" name="q39" value="B"> B) changed → began → ended</label>
-        <label class="option"><input type="radio" name="q39" value="C"> C) ended → changed → began</label>
-        <label class="option"><input type="radio" name="q39" value="D"> D) began → ended → changed</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">40. You cannot customize the UISwitch component</div>
-        <label class="option"><input type="radio" name="q40" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q40" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">41. Which can display long lists of elements of the same type?</div>
-        <label class="option"><input type="radio" name="q41" value="A"> A) UITableView</label>
-        <label class="option"><input type="radio" name="q41" value="B"> B) UIListView</label>
-        <label class="option"><input type="radio" name="q41" value="C"> C) UITextView</label>
-        <label class="option"><input type="radio" name="q41" value="D"> D) UICollectionView</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">42. Which setting changes the way slider sends updates to controller?</div>
-        <label class="option"><input type="radio" name="q42" value="A"> A) isContinuous</label>
-        <label class="option"><input type="radio" name="q42" value="B"> B) sentWhenDone</label>
-        <label class="option"><input type="radio" name="q42" value="C"> C) isDoneEditting</label>
-        <label class="option"><input type="radio" name="q42" value="D"> D) isFinished</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">43. Which displays an editable text area?</div>
-        <label class="option"><input type="radio" name="q43" value="A"> A) UITextField</label>
-        <label class="option"><input type="radio" name="q43" value="B"> B) UILabel</label>
-        <label class="option"><input type="radio" name="q43" value="C"> C) UITextView</label>
-        <label class="option"><input type="radio" name="q43" value="D"> D) UITextObject</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">44. What happens when a text field becomes first responder?</div>
-        <label class="option"><input type="radio" name="q44" value="A"> A) keyboard shows and input binds to text field</label>
-        <label class="option"><input type="radio" name="q44" value="B"> B) keyboard hides and input binds</label>
-        <label class="option"><input type="radio" name="q44" value="C"> C) keyboard hides and input unbinds</label>
-        <label class="option"><input type="radio" name="q44" value="D"> D) keyboard shows and input unbinds</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">45. Which function hides the keyboard?</div>
-        <label class="option"><input type="radio" name="q45" value="A"> A) resignFirstResponder</label>
-        <label class="option"><input type="radio" name="q45" value="B"> B) resetFirstResponder</label>
-        <label class="option"><input type="radio" name="q45" value="C"> C) resignKeyboard</label>
-        <label class="option"><input type="radio" name="q45" value="D"> D) hideKeyboard</label>
-      </div>
-
-      <!-- ===================================================== -->
-      <!-- QUIZ 6 -->
-      <!-- ===================================================== -->
-      <div class="section-title">Quiz 6 — Sensors & Location Services</div>
-
-      <!-- 12 questions (46–57) -->
-      <div class="question-card"><div class="question-title">46. Permission to use location data has to be given each time the application tries to access the data.</div>
-        <label class="option"><input type="radio" name="q46" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q46" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">47. What does accelerometer measure?</div>
-        <label class="option"><input type="radio" name="q47" value="A"> A) Change in velocity along axis</label>
-        <label class="option"><input type="radio" name="q47" value="B"> B) Gravitation</label>
-        <label class="option"><input type="radio" name="q47" value="C"> C) Change in position of device</label>
-        <label class="option"><input type="radio" name="q47" value="D"> D) Change in orientation</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">48. When is permission to access location requested?</div>
-        <label class="option"><input type="radio" name="q48" value="A"> A) Only on installation</label>
-        <label class="option"><input type="radio" name="q48" value="B"> B) When app starts</label>
-        <label class="option"><input type="radio" name="q48" value="C"> C) Each time app wants location</label>
-        <label class="option"><input type="radio" name="q48" value="D"> D) When program requests it at runtime if not permanently given before</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">49. What is the unit of rotation used by sensors?</div>
-        <label class="option"><input type="radio" name="q49" value="A"> A) radian/second</label>
-        <label class="option"><input type="radio" name="q49" value="B"> B) degree/second</label>
-        <label class="option"><input type="radio" name="q49" value="C"> C) radian/hour</label>
-        <label class="option"><input type="radio" name="q49" value="D"> D) degree/minute</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">50. Permission to use location data has to be checked each time the application tries to access the data.</div>
-        <label class="option"><input type="radio" name="q50" value="A"> A) True</label>
-        <label class="option"><input type="radio" name="q50" value="B"> B) False</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">51. Accelerometer values are increments of gravitational acceleration. What does it mean?</div>
-        <label class="option"><input type="radio" name="q51" value="A"> A) 1.0 represents 9.8 m/s²</label>
-        <label class="option"><input type="radio" name="q51" value="B"> B) 1.0 represents 1.0 m/s²</label>
-        <label class="option"><input type="radio" name="q51" value="C"> C) 10 represents 9.8 m/s²</label>
-        <label class="option"><input type="radio" name="q51" value="D"> D) 10 represents 1.0 m/s²</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">52. Which framework is used to access sensor data about motion and environment?</div>
-        <label class="option"><input type="radio" name="q52" value="A"> A) CoreMotion</label>
-        <label class="option"><input type="radio" name="q52" value="B"> B) CoreSensors</label>
-        <label class="option"><input type="radio" name="q52" value="C"> C) SensorManager</label>
-        <label class="option"><input type="radio" name="q52" value="D"> D) SensorCore</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">53. Which sensor measures the rate at which the device rotates around a specific axis?</div>
-        <label class="option"><input type="radio" name="q53" value="A"> A) Gyroscope</label>
-        <label class="option"><input type="radio" name="q53" value="B"> B) Accelerometer</label>
-        <label class="option"><input type="radio" name="q53" value="C"> C) Rotationmeter</label>
-        <label class="option"><input type="radio" name="q53" value="D"> D) Spinometer</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">54. How can energy consumption be minimized when using location services?</div>
-        <label class="option"><input type="radio" name="q54" value="A"> A) Use significant-change service</label>
-        <label class="option"><input type="radio" name="q54" value="B"> B) Lower frequency of updates</label>
-        <label class="option"><input type="radio" name="q54" value="C"> C) Both A and B</label>
-        <label class="option"><input type="radio" name="q54" value="D"> D) It is not possible</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">55. In what format is the acceleration data returned?</div>
-        <label class="option"><input type="radio" name="q55" value="A"> A) vector with 3 values</label>
-        <label class="option"><input type="radio" name="q55" value="B"> B) vector with 4 values</label>
-        <label class="option"><input type="radio" name="q55" value="C"> C) vector with 1 value</label>
-        <label class="option"><input type="radio" name="q55" value="D"> D) single number</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">56. Which framework is used to obtain the location information?</div>
-        <label class="option"><input type="radio" name="q56" value="A"> A) CoreLocation</label>
-        <label class="option"><input type="radio" name="q56" value="B"> B) CoreMotion</label>
-        <label class="option"><input type="radio" name="q56" value="C"> C) CoreGPS</label>
-        <label class="option"><input type="radio" name="q56" value="D"> D) LocationKit</label>
-      </div>
-
-      <div class="question-card"><div class="question-title">57. What does GPS provide?</div>
-        <label class="option"><input type="radio" name="q57" value="A"> A) Geographic coordinate position</label>
-        <label class="option"><input type="radio" name="q57" value="B"> B) Device orientation</label>
-        <label class="option"><input type="radio" name="q57" value="C"> C) Device acceleration</label>
-        <label class="option"><input type="radio" name="q57" value="D"> D) Network address</label>
-      </div>
-
-      <button type="button" class="btn-submit" onclick="submitQuiz()">Submit Exam</button>
-      <button type="button" class="btn-reset" onclick="resetQuiz()">Reset</button>
-    </form>
-
-    <div id="result" class="result-box" style="display:none;"></div>
-    <div id="answerKey" class="answer-key" style="display:none;"></div>
+    <details id="answerKeyWrap" class="key">
+      <summary>Show Answer Key (Correct choice + text)</summary>
+      <div id="answerKey" class="key-body"></div>
+    </details>
   </div>
 
   <script>
-    // Correct answer key: q1..q57 → letter
-    // (Derived from your screenshots + quiz docs)
-    const correct = {
-      // Quiz 1 (1–10)
-      q1:"A", q2:"B", q3:"A", q4:"A", q5:"A",
-      q6:"B", q7:"D", q8:"A", q9:"A", q10:"A",
+    // -----------------------------
+    // DATA: Questions with correctIndex (0-based)
+    // We'll shuffle choices but preserve correctness.
+    // -----------------------------
+    const sections = [
+      {
+        title: "Quiz 1 — Swift Basics",
+        questions: [
+          { text:"In Swift, functions can be passed as parameters to other functions and they can be returned from functions.", choices:["True","False"], correctIndex:0 },
+          { text:"In Swift, all types contain a nil as a possible value", choices:["True","False"], correctIndex:1 },
+          { text:"How the optional type is denoted in Swift?", choices:[
+              "by adding a question mark (?) after the name of the type",
+              "by adding an exclamation mark (!) after the name of the type",
+              "by adding a question mark (?) infront of the name of the type",
+              "by adding an exclamation mark (!) infront of the name of the type"
+            ], correctIndex:0
+          },
+          { text:"Which statement can be used to declare an integer constant of value 5 in Swift?", choices:[
+              "let x = 5","let Int x = 5","const x:Int","x=5","const x = 5"
+            ], correctIndex:0
+          },
+          { text:"Which of the following is true?", choices:[
+              "In Swift, values are never converted (cast operation) automatically to another type",
+              "In Swift, values are always converted (cast operation) automatically to another type if needed",
+              "In Swift, conversion (cast operation) is not possible at all",
+              "There is no such thing as a cast operation in programming languages"
+            ], correctIndex:0
+          },
+          { text:"Swift requires each line to be terminated by a semicolon ';'.", choices:["True","False"], correctIndex:1 },
+          { text:"For x=5, you want to print: Value of x is: 5\nWhich expression would you use?", choices:[
+              "print(\"Value of x is: \\(x)\")",
+              "print(\"Value of x is: \"+String(x))",
+              "print(\"Value of x is: \", x)",
+              "All of the above"
+            ], correctIndex:3
+          },
+          { text:"Which expression allows us to declare an array?", choices:[
+              "var shoppingList = [\"catfish\", \"water\", \"tulips\", \"blue paint\"]",
+              "var shoppingList = (\"catfish\", \"water\", \"tulips\", \"blue paint\")",
+              "array shoppingList = [\"catfish\", \"water\", \"tulips\", \"blue paint\"]",
+              "var shoppingList = array[\"catfish\", \"water\", \"tulips\", \"blue paint\"]"
+            ], correctIndex:0
+          },
+          { text:"Which expression declares a function that takes an Int and returns String?", choices:[
+              "func foo(a:Int)->String",
+              "function foo(a:Int)->String",
+              "func foo(a:Int):String",
+              "function foo(a:Int):String"
+            ], correctIndex:0
+          },
+          { text:"Swift is ...", choices:[
+              "a strongly typed language that allows for type inference",
+              "a weakly typed language that allows for type inference",
+              "a strongly typed language that does not allow for type inference",
+              "a weakly typed language that does not allow for type inference"
+            ], correctIndex:0
+          }
+        ]
+      },
 
-      // Quiz 2 (11–20)
-      q11:"A", q12:"A", q13:"A", q14:"A", q15:"A",
-      q16:"A", q17:"C", q18:"C", q19:"B", q20:"A",
+      {
+        title: "Quiz 2 — Swift Functions & Parameters",
+        questions: [
+          { text:"In Swift, function is identified by", choices:[
+              "keyword func","keyword function","returned type with ->","at least one parameter"
+            ], correctIndex:0
+          },
+          { text:"In:\nfunc swapTwoInts(_ a: inout Int, _ b: inout Int) { (a, b) = (b, a) }\n'_' means:", choices:[
+              "when calling the function param labels should not be used",
+              "inout means that params are appearing and disappearing",
+              "params are output parameters",
+              "parameters are optional"
+            ], correctIndex:0
+          },
+          { text:"In Swift a class ...", choices:[
+              "can inherit from one class but conform to multiple protocols",
+              "can inherit from multiple classes and conform to multiple protocols",
+              "can inherit from multiple classes but conform to only one protocol",
+              "can inherit from one class and conform to a single protocol"
+            ], correctIndex:0
+          },
+          { text:"Swift allows functions to be nested (a function inside another function).", choices:["True","False"], correctIndex:0 },
+          { text:"Consider:\nfunc minMax(array:[Int])->(a:Int, b:Int)?\nBest answer:", choices:[
+              "takes array of Ints and returns tuple (two Ints) OR nil",
+              "takes array and returns tuple with two Int values",
+              "returns tuple with two Int values or nil",
+              "returns an Int value or nil"
+            ], correctIndex:0
+          },
+          { text:"Consider:\nfunc add(no1:Int, no2:Int)->Int\nBest answer:", choices:[
+              "takes two Int parameters and returns an Int",
+              "takes two Int parameters",
+              "returns an Int",
+              "incorrect declaration"
+            ], correctIndex:0
+          },
+          { text:"How many times will the loop execute?\nfor i in 1...10 { ... }", choices:["5","9","10","11"], correctIndex:2 },
+          { text:"In the declaration with inout parameters, 'inout' means:", choices:[
+              "param labels must be used",
+              "params are appearing and disappearing",
+              "params are input and output parameters",
+              "parameters are optional"
+            ], correctIndex:2
+          },
+          { text:"The following two functions have the same type.", choices:["True","False"], correctIndex:1 },
+          { text:"In:\nfunc pow(firstArg a:Int)->Int\nWhich is correct?", choices:[
+              "firstArg is used in the call, a is used in the body",
+              "a is used in the call, firstArg is used in the body",
+              "firstArg used in call and both names can be used in the body",
+              "both are used in call and both used in the body"
+            ], correctIndex:0
+          }
+        ]
+      },
 
-      // Quiz 3 (21–25)
-      q21:"B", q22:"A", q23:"A", q24:"A", q25:"A",
+      {
+        title: "Quiz 3 — SwiftUI",
+        questions: [
+          { text:"SwiftUI can be only used to define UI for simple applications", choices:["True","False"], correctIndex:1 },
+          { text:"SwiftUI uses a declarative approach", choices:["True","False"], correctIndex:0 },
+          { text:"The origin of the UI element in iOS app is the upper-left corner", choices:["True","False"], correctIndex:0 },
+          { text:"What is SwiftUI?", choices:[
+              "an innovative way to build user interfaces using Swift",
+              "a UI component defined in Swift",
+              "a UI component allowing user to code in Swift",
+              "a scripting language that supports Storyboard"
+            ], correctIndex:0
+          },
+          { text:"Visual tool used to build layouts + define navigation/transitions:", choices:[
+              "storyboard","SwiftUI","Layout editor","UI inspector"
+            ], correctIndex:0
+          }
+        ]
+      },
 
-      // Quiz 4 (26–35)
-      q26:"B", q27:"A", q28:"C", q29:"B", q30:"A",
-      q31:"B", q32:"A", q33:"A", q34:"C", q35:"A",
+      {
+        title: "Quiz 4 — iOS Segues",
+        questions: [
+          { text:"This segue displays the new content using showDetailViewController:sender:.", choices:["show","show details","present modally","present as popover"], correctIndex:1 },
+          { text:"A ___________ defines a transition between two view controllers in a storyboard.", choices:["segue","transition","passage","link"], correctIndex:0 },
+          { text:"How can segues be executed in an iOS application?", choices:["only automatically","only programatically","either automatically or programmatically","segues are not executed"], correctIndex:2 },
+          { text:"Which method allows you to prevent segue execution?", choices:["prepare(for:sender:)","shouldPerformSegue(withIdentifier:sender:)","viewDidLoad()","unwind(_: )"], correctIndex:1 },
+          { text:"performSegueWithIdentifier(\"SomeIdentifier\", sender: self) does what?", choices:[
+              "Triggers transition defined by segue with id SomeIdentifier",
+              "Triggers transition to VC with id SomeIdentifier",
+              "Triggers transition from VC with id SomeIdentifier",
+              "This call is incorrect"
+            ], correctIndex:0
+          },
+          { text:"If the segue is source → destination, you define an unwind action in the destination VC.", choices:["True","False"], correctIndex:1 },
+          { text:"A segue is:", choices:[
+              "a one-way connection between source and destination view controllers",
+              "a two-way connection between source and destination view controllers",
+              "a multidirectional connection between multiple view controllers",
+              "this name does not have a meaning in iOS"
+            ], correctIndex:0
+          },
+          { text:"This segue displays new content using showViewController:sender:.", choices:["show","show details","present modally","present as popover"], correctIndex:0 },
+          { text:"This segue displays a view controller modally using presentation/transition styles.", choices:["show","show details","present modally","present as popover"], correctIndex:2 },
+          { text:"Which method allows passing data from source VC to destination VC?", choices:["prepare(for:sender:)","shouldPerformSegue(...)","viewDidLoad()","unwind(_: )"], correctIndex:0 }
+        ]
+      },
 
-      // Quiz 5 (36–45)
-      q36:"A", q37:"A", q38:"B", q39:"A", q40:"B",
-      q41:"A", q42:"A", q43:"C", q44:"A", q45:"A",
+      {
+        title: "Quiz 5 — iOS UI / TableView / Gestures",
+        questions: [
+          { text:"What does it mean that a table view is a data driven view?", choices:[
+              "it generates the content based on the data from data source",
+              "it generates the content based on the user input",
+              "it is controlled by a data source",
+              "it is controlled by data entry"
+            ], correctIndex:0
+          },
+          { text:"Select all types of the gesture recognizers (best answer)", choices:[
+              "discrete and continuous","discrete","continuous","single-touch","multi-touch"
+            ], correctIndex:0
+          },
+          { text:"Can you set the current value of the slider beyond the range min-max?", choices:[
+              "Yes, but only in storyboard/interface builder",
+              "Yes, but only programatically",
+              "No, it is not possible",
+              "Yes, but it will cause a runtime error"
+            ], correctIndex:1
+          },
+          { text:"Arrange the gesture recognizer states in correct order.", choices:[
+              "began → changed → ended",
+              "changed → began → ended",
+              "ended → changed → began",
+              "began → ended → changed"
+            ], correctIndex:0
+          },
+          { text:"You cannot customize the UISwitch component", choices:["True","False"], correctIndex:1 },
+          { text:"Which can be used to display long lists of elements of the same type?", choices:[
+              "UITableView","UIListView","UITextView","UICollectionView"
+            ], correctIndex:0
+          },
+          { text:"Which setting changes the way slider sends updates to controller?", choices:[
+              "isContinuous","sentWhenDone","isDoneEditting","isFinished"
+            ], correctIndex:0
+          },
+          { text:"Which displays an editable text area?", choices:[
+              "UITextField","UILabel","UITextView","UITextObject"
+            ], correctIndex:2
+          },
+          { text:"What happens when a text field becomes a first responder?", choices:[
+              "system shows keyboard and binds input to text field",
+              "system hides keyboard and binds input to text field",
+              "system hides keyboard and unbinds input to text field",
+              "system shows keyboard and unbinds input to text field"
+            ], correctIndex:0
+          },
+          { text:"Which function hides the keyboard?", choices:[
+              "resignFirstResponder","resetFirstResponder","resignKeyboard","hideKeyboard"
+            ], correctIndex:0
+          }
+        ]
+      },
 
-      // Quiz 6 (46–57)
-      q46:"B", q47:"A", q48:"D", q49:"A", q50:"A",
-      q51:"A", q52:"A", q53:"A", q54:"C", q55:"A",
-      q56:"A", q57:"A"
-    };
+      {
+        title: "Quiz 6 — Sensors & Location Services",
+        questions: [
+          { text:"Permission to use location data has to be given each time the application tries to access the data.", choices:["True","False"], correctIndex:1 },
+          { text:"What does accelerometer measure?", choices:[
+              "Change in velocity along axis","Gravitation","Change in position of the device","Change in orientation of the device"
+            ], correctIndex:0
+          },
+          { text:"When is the permission to access the location requested?", choices:[
+              "Only on app installation","When application starts","Each time app wants to use location data","When the program requests it at runtime if not permanently given before"
+            ], correctIndex:3
+          },
+          { text:"What is the unit of rotation used by sensors?", choices:[
+              "radian/second","degree/second","radian/hour","degree/minute"
+            ], correctIndex:0
+          },
+          { text:"Permission to use location data has to be checked each time the application tries to access the data.", choices:["True","False"], correctIndex:0 },
+          { text:"Accelerometer values are increments of gravitational acceleration. What does it mean?", choices:[
+              "1.0 represents 9.8 m/s²","1.0 represents 1.0 m/s²","10 represents 9.8 m/s²","10 represents 1.0 m/s²"
+            ], correctIndex:0
+          },
+          { text:"Which framework is used to access sensor data about motion and environment?", choices:[
+              "CoreMotion","CoreSensors","SensorManager","SensorCore"
+            ], correctIndex:0
+          },
+          { text:"Which sensor measures the rate at which the device rotates around a specific axis?", choices:[
+              "Gyroscope","Accelerometer","Rotationmeter","Spinometer"
+            ], correctIndex:0
+          },
+          { text:"How can energy consumption be minimized when using location services?", choices:[
+              "Use significant-change service","Lower the frequency of updates","Both A and B","It is not possible"
+            ], correctIndex:2
+          },
+          { text:"In what format is the acceleration data returned?", choices:[
+              "vector with 3 values","vector with 4 values","vector with 1 values","single number"
+            ], correctIndex:0
+          },
+          { text:"Which framework is used to obtain the location information?", choices:[
+              "CoreLocation","CoreMotion","CoreGPS","LocationKit"
+            ], correctIndex:0
+          },
+          { text:"What does GPS provide?", choices:[
+              "Geographic coordinate position","Device orientation","Device acceleration","Network address"
+            ], correctIndex:0
+          }
+        ]
+      }
+    ];
 
-    function submitQuiz() {
+    // -----------------------------
+    // Helpers
+    // -----------------------------
+    function shuffle(array){
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    // We'll build a runtime answer key after shuffling: { qName: correctLetter }
+    // Also store choice text mapping for answer key display.
+    const runtimeCorrect = {};
+    const runtimeCorrectText = {};
+    const runtimeChoices = {}; // qName -> [{letter,text,isCorrect}...]
+
+    // -----------------------------
+    // Render the exam
+    // -----------------------------
+    const form = document.getElementById("quizForm");
+    let qCounter = 0;
+
+    function render(){
+      form.innerHTML = "";
+      qCounter = 0;
+
+      sections.forEach(section=>{
+        const st = document.createElement("div");
+        st.className = "section-title";
+        st.textContent = section.title;
+        form.appendChild(st);
+
+        section.questions.forEach(q=>{
+          qCounter++;
+          const qName = `q${qCounter}`;
+
+          // create shuffled choice objects
+          const choiceObjs = q.choices.map((text, idx)=>({
+            text,
+            isCorrect: idx === q.correctIndex
+          }));
+          shuffle(choiceObjs);
+
+          // assign letters after shuffle
+          const withLetters = choiceObjs.map((c, idx)=>({
+            letter: LETTERS[idx],
+            text: c.text,
+            isCorrect: c.isCorrect
+          }));
+
+          runtimeChoices[qName] = withLetters;
+
+          const correctObj = withLetters.find(x=>x.isCorrect);
+          runtimeCorrect[qName] = correctObj.letter;
+          runtimeCorrectText[qName] = correctObj.text;
+
+          // card
+          const card = document.createElement("div");
+          card.className = "question-card";
+
+          const title = document.createElement("div");
+          title.className = "question-title";
+          title.textContent = `${qCounter}. ${q.text}`;
+          card.appendChild(title);
+
+          // options
+          withLetters.forEach(opt=>{
+            const lab = document.createElement("label");
+            lab.className = "option";
+            lab.dataset.q = qName;
+            lab.dataset.letter = opt.letter;
+            lab.dataset.correct = opt.isCorrect ? "1" : "0";
+
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = qName;
+            input.value = opt.letter;
+
+            lab.appendChild(input);
+            lab.appendChild(document.createTextNode(` ${opt.letter}) ${opt.text}`));
+            card.appendChild(lab);
+          });
+
+          // feedback line
+          const fb = document.createElement("div");
+          fb.className = "feedback";
+          fb.id = `fb-${qName}`;
+          card.appendChild(fb);
+
+          form.appendChild(card);
+        });
+      });
+    }
+
+    render();
+
+    // -----------------------------
+    // Submit + Feedback
+    // -----------------------------
+    function submitQuiz(){
       let score = 0;
-      const total = Object.keys(correct).length;
+      const total = Object.keys(runtimeCorrect).length;
 
-      // Disable all radios (lock exam)
+      // lock
       document.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
 
-      // Clear styling
+      // clear styles
       document.querySelectorAll("label.option").forEach(l => {
-        l.classList.remove("correct", "incorrect");
+        l.classList.remove("correct","incorrect");
       });
 
-      // Evaluate
-      Object.keys(correct).forEach(qName => {
-        const correctLetter = correct[qName];
+      Object.keys(runtimeCorrect).forEach(qName=>{
+        const correctLetter = runtimeCorrect[qName];
+        const correctText = runtimeCorrectText[qName];
         const selected = document.querySelector(`input[name="${qName}"]:checked`);
-        const options = document.querySelectorAll(`input[name="${qName}"]`);
+        const fb = document.getElementById(`fb-${qName}`);
 
-        // highlight correct option
-        options.forEach(opt => {
-          if (opt.value === correctLetter) {
-            opt.parentElement.classList.add("correct");
+        // mark correct option green
+        document.querySelectorAll(`label.option[data-q="${qName}"]`).forEach(lab=>{
+          if(lab.dataset.letter === correctLetter){
+            lab.classList.add("correct");
           }
         });
 
-        // user answered
-        if (selected) {
-          if (selected.value === correctLetter) {
-            score++;
-          } else {
-            selected.parentElement.classList.add("incorrect");
-          }
+        if(!selected){
+          fb.className = "feedback bad";
+          fb.innerHTML = `No answer selected. <b>Correct:</b> ${correctLetter}) ${correctText}`;
+          return;
+        }
+
+        const chosenLetter = selected.value;
+        const chosenObj = runtimeChoices[qName].find(x=>x.letter === chosenLetter);
+
+        if(chosenLetter === correctLetter){
+          score++;
+          fb.className = "feedback ok";
+          fb.innerHTML = `<b>Your answer:</b> ${chosenLetter}) ${chosenObj.text} ✅ <br><b>Correct:</b> ${correctLetter}) ${correctText}`;
+        } else {
+          // mark chosen wrong red
+          const chosenLabel = document.querySelector(`label.option[data-q="${qName}"][data-letter="${chosenLetter}"]`);
+          if(chosenLabel) chosenLabel.classList.add("incorrect");
+
+          fb.className = "feedback bad";
+          fb.innerHTML = `<b>Your answer:</b> ${chosenLetter}) ${chosenObj.text} ❌ <br><b>Correct:</b> ${correctLetter}) ${correctText}`;
         }
       });
 
-      // Show score
-      const resultBox = document.getElementById("result");
-      resultBox.style.display = "block";
-      const percent = Math.round((score / total) * 100);
-      resultBox.textContent = `Your Score: ${score} / ${total} (${percent}%)`;
+      // score box
+      const result = document.getElementById("result");
+      const percent = Math.round((score/total)*100);
+      result.style.display = "block";
+      result.textContent = `Your Score: ${score} / ${total} (${percent}%)`;
 
-      // Answer key
-      let keyHTML = "<h3>Answer Key</h3>";
-      let i = 1;
-      Object.keys(correct).forEach(qName => {
-        keyHTML += `Question ${i}: <strong>${correct[qName]}</strong><br>`;
-        i++;
-      });
+      // answer key (optional)
+      const keyWrap = document.getElementById("answerKeyWrap");
+      const key = document.getElementById("answerKey");
 
-      const keyBox = document.getElementById("answerKey");
-      keyBox.innerHTML = keyHTML;
-      keyBox.style.display = "block";
+      let html = "";
+      for(let i=1;i<=total;i++){
+        const qName = `q${i}`;
+        html += `<b>Question ${i}:</b> ${runtimeCorrect[qName]}) ${escapeHtml(runtimeCorrectText[qName])}<br>`;
+      }
+      key.innerHTML = html;
+      keyWrap.style.display = "block";
 
       window.scrollTo({top:0, behavior:"smooth"});
     }
 
     function resetQuiz(){
-      document.querySelectorAll('input[type="radio"]').forEach(r => {
-        r.checked = false;
-        r.disabled = false;
-      });
-
-      document.querySelectorAll("label.option").forEach(l => {
-        l.classList.remove("correct", "incorrect");
-      });
-
-      document.getElementById("result").style.display = "none";
-      document.getElementById("answerKey").style.display = "none";
-      window.scrollTo({top:0, behavior:"smooth"});
+      // just reload to reshuffle cleanly
+      location.reload();
     }
-  </script>
 
+    // small HTML escape for answer key text
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll("\"","&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // expose for onclick
+    window.submitQuiz = submitQuiz;
+    window.resetQuiz = resetQuiz;
+  </script>
 </body>
 </html>
